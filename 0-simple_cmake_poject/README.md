@@ -45,8 +45,6 @@ make
 ### Build Documentation
 Just perform the following commands to build the documentation (I've already littered this repo with doc strings)
 ```
-cd 0-simple_cmake_project
-mkdir build
 cd build
 make doc
 ```
