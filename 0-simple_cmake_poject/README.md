@@ -5,6 +5,7 @@ This project is pretty simple. I made a class called `simple_library` and stored
 
 ## Project Structure
 These are the reasons why the filesystem is like so:
+* doc --- folder to hold configuration for how/where to get documentation info
 * inc --- folder to hold the projects header files (.hpp)
 * src --- folder to hold the projects source files (.cpp)
 * libs --- folder to hold external libraries that we need to use in this project, if applicable
@@ -15,11 +16,23 @@ These are the reasons why the filesystem is like so:
 This was done on Ubuntu 18.04 VM, but this will probably work on Ubuntu 14.04+. Here are the dependencies needed in order to build this project:
 
 ```
-sudo apt-get install build-essential g++ cmake
+sudo apt-get install build-essential g++ cmake doxygen
 ```
-
+### How to install GoogleTest
+1. download these dependencies:
+```
+sudo apt-get install libgtest-dev googletest
+```
+2. Compile GTest's static libraries (`.lib`) and put it in the right area:
+```
+cd /usr/src/gtest
+sudo cmake CMakeLists.txt
+sudo make
+sudo cp *.a /usr/lib
+```
+That's it. You now have GoogleTest
 ## How To Build
-
+### Build Tests and Binaries
 Just perform the following commands to build the project:
 ```
 cd 0-simple_cmake_project
@@ -28,6 +41,16 @@ cd build
 cmake ..
 make
 ```
+
+### Build Documentation
+Just perform the following commands to build the documentation (I've already littered this repo with doc strings)
+```
+cd 0-simple_cmake_project
+mkdir build
+cd build
+make doc
+```
+The documentation can be found in `build/doc/simple_project/html/index.html`. Open that.
 ## How To Run
 
 To run the project, execute the `main` executable in your `build/bin/` folder:
