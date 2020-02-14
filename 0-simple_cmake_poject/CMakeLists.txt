@@ -1,6 +1,7 @@
 project(simple_project)
 CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 ################################################################################
 # Add Flags
@@ -8,6 +9,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # - Make sure that we use C++11 standard when compiling
 # - Use -O3 to optmize the code
 ################################################################################
+enable_testing()
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -O3 -g -fPIC")
 
@@ -48,3 +50,4 @@ install(TARGETS main DESTINATION bin)
 ################################################################################
 message (STATUS "Making unit testing modules for this application")
 add_subdirectory(tests)
+add_subdirectory(doc)

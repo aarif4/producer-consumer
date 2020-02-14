@@ -1,5 +1,15 @@
+///
+/// @file main.cpp
+/// @author memememe
+///
+
 #include "simple_library.hpp"
 
+/// @author me
+/// @brief this does somehting main
+/// this is a longer
+/// stuff
+/// @returns nada
 int main()
 {
     printf("main: starting application\n");
