@@ -15,7 +15,7 @@ These are the reasons why the filesystem is like so:
 This was done on Ubuntu 18.04 VM, but this will probably work on Ubuntu 14.04+. Here are the dependencies needed in order to build this project:
 
 ```
-sudo apt-get install build-essentials g++ cmake
+sudo apt-get install build-essential g++ cmake
 ```
 
 ## How To Build
