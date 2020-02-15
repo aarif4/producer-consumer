@@ -1,5 +1,11 @@
+///
+/// @file semaphore.hpp
+/// @author aarif
+///
+
 #ifndef __semaphore_h__
 #define __semaphore_h__
+
 #include <mutex>
 #include <condition_variable>
 
@@ -12,11 +18,12 @@ class Semaphore {
         }
         void down();
         void up();
+        int get_value();
 
     private:
         int m_value; // value of semaphore
         std::mutex m_mux; // controls access
         std::condition_variable m_waitcond; // control waiting and restart
 };
-#endif // __semaphore_h__
 
+#endif // __semaphore_h__

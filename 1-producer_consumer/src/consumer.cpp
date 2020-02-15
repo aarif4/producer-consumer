@@ -1,62 +1,66 @@
-#include "Consumer.hpp"
+#include "consumer.hpp"
 
 /// @brief this is the Consumer's constructor
 ///
-/// This is a not-so-simple constructor of a Consumer. 
+/// It essentially creates a unique ID for this consumer obj and
+/// holds reference to the shared resource Queue
 ///
 /// @author aarif
-/// @param[in]   newid                 id used when printing stuff for this producer
-/// @param[in]   queue_access          mutex that tells us when it's ok to access queue
-/// @param[in]   empty_slot_counter    semaphore to dec no. of empty slots
-/// @param[in]   filled_slot_counter   semaphore to inc. no of empty slots
-/// @param[in]    queue_var            actual queue
-/// @return Pointer to Consumer class
-Consumer::Consumer(std::string newid, 
-                   std::mutex* queue_access, 
-                   Semaphore* empty_slot_counter, 
-                   Semaphore* filled_slot_counter, 
-                   std::vector<std::string>* queue_var)
+/// @param[in]  id            unique identifier for this consumer
+/// @param[in]  queue         Queue object to put string messages to
+/// @param[in]  sleep_dur_sec dur to sleep after adding msg to queue
+/// @return Pointer to an instance of the Consumer class
+Consumer::Consumer(std::string id, 
+                   Queue* queue, double sleep_sec) 
+                  :id(id),queue(queue),sleep_dur_sec(sleep_sec)
 {
-    id                 = newid;
-    printf("In Consumer %s's constructor\n", id);
-    queue_size         = (*queue_var).size();
-    QueueAccess        = queue_access;
-    EmptySlotsInQueue  = empty_slot_counter;
-    FilledSlotsInQueue = filled_slot_counter;
-    queue              = queue_var;
+    if (DEBUG)
+    {
+        fprintf(stderr, "In Consumer %s's constructor\n", this->id.c_str());
+    }
 }
 
 /// @brief this is the Consumer's destructor
 ///
-/// This is a simple destructor of a Consumer. For now, all it does is print
-/// a string to signify that this destructor is called
+/// For now, all it does is print a message to tell the user that 
+/// this method has been reached
 ///
 /// @author aarif
 Consumer::~Consumer()
 {
-    printf("In Consumer %s's destructor\n", id);
+    if(DEBUG)
+    {
+        fprintf(stderr, "In Consumer %s's destructor\n", this->id.c_str());
+    }
 }
 
 
-/// @brief this is the run function that will indefinitely keep removing data from the queue
+/// @brief this allows the Consumer instance to run indefinitely
+/// and keep adding message to the queue as long as there's space
+/// in it
 /// @author aarif
 void Consumer::run()
 {
-    static int cnt = 0;
+    fprintf(stderr, "in consumer %s's run() fcn\n",this->id.c_str());
     while(true)
     {
-        FilledSlotsInQueue->down();
-        QueueAccess->lock();
-
-        std::string msg = (*queue)[cnt];
-        printf("Cons %s: Got this msg in queue: \'%s\'\n",msg.c_str());
-
-        QueueAccess->unlock();
-        EmptySlotsInQueue->up();
-        cnt++;
-        if (cnt > (*queue).size())
+        fprintf(stderr, "in consumer %s's while\n",this->id.c_str());
+        // make a message to put in the queue
+        // let the user know that you're about to put it in the queue
+        if (DEBUG)
         {
-            break;
+            fprintf(stderr, "%s: Going to get message from queue.\n",this->id.c_str());
         }
+        // make the call
+        std::string msg = this->queue->pullMsg();
+        // let the user know the message TODO: time elapsed?
+        fprintf(stderr, "%s: Got this msg from the queue: \'%s\'\n",this->id.c_str(), msg.c_str());
+
+        // sleep for a period of time
+        sleep((unsigned int)this->sleep_dur_sec);
+
+        // increment msg counter
     }
 }
+
+

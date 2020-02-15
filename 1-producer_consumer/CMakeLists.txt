@@ -29,16 +29,21 @@ add_library(semaphore STATIC
 src/semaphore.cpp
 inc/semaphore.hpp
 )
+add_library(queue STATIC
+src/queue.cpp
+inc/queue.hpp
+)
+target_link_libraries(queue semaphore)
 add_library(producer STATIC
 src/producer.cpp
 inc/producer.hpp
 )
-target_link_libraries(producer semaphore)
+target_link_libraries(producer queue)
 add_library(consumer STATIC
 src/consumer.cpp
 inc/consumer.hpp
 )
-target_link_libraries(consumer semaphore)
+target_link_libraries(consumer queue)
 
 
 
@@ -47,7 +52,7 @@ target_link_libraries(consumer semaphore)
 # Build Project
 ################################################################################
 add_executable(main src/main.cpp)
-target_link_libraries(main producer consumer semaphore)
+target_link_libraries(main producer consumer queue semaphore pthread)
 install(TARGETS main DESTINATION bin)
 
 

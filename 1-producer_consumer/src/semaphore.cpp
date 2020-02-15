@@ -23,3 +23,8 @@ void Semaphore::up()
         m_waitcond.notify_one();
     }
 }
+
+int Semaphore::get_value()
+{
+    return this->m_value;
+}
