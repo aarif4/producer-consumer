@@ -2,15 +2,28 @@
 
 /// @brief this is the Producer's constructor
 ///
-/// This is a simple constructor of a Producer. All it does for now is sets an
-/// attribute in the Producer class (public_val) to zero
+/// This is a not-so-simple constructor of a Producer. 
 ///
 /// @author aarif
+/// @param[in]   newid                 id used when printing stuff for this producer
+/// @param[in]   queue_access          mutex that tells us when it's ok to access queue
+/// @param[in]   empty_slot_counter    semaphore to dec no. of empty slots
+/// @param[in]   filled_slot_counter   semaphore to inc. no of empty slots
+/// @param[in]    queue_var            actual queue
 /// @return Pointer to Producer class
-Producer::Producer()
+Producer::Producer(std::string newid, 
+                   std::mutex* queue_access, 
+                   Semaphore* empty_slot_counter, 
+                   Semaphore* filled_slot_counter, 
+                   std::vector<std::string>* queue_var)
 {
     printf("In Producer's constructor\n");
-    public_val  = 0;
+    id                 = newid;
+    queue_size         = (uint32_t) (*queue_var).size();
+    QueueAccess        = queue_access;
+    EmptySlotsInQueue  = empty_slot_counter;
+    FilledSlotsInQueue = filled_slot_counter;
+    queue              = queue_var;
 }
 
 /// @brief this is the Producer's destructor
@@ -25,19 +38,27 @@ Producer::~Producer()
 }
 
 
-/// @brief this is the Producer's attribute setter (public_val)
+/// @brief this is the run function that will indefinitely keep adding data to the queue
 /// @author aarif
-/// @param[in]   num   a number to set Producer's public_val attribute to
-void Producer::set_public_val(int num)
+void Producer::run()
 {
-    public_val = num;
+    static int cnt = 0;
+    while(true)
+    {
+        EmptySlotsInQueue->down();
+        QueueAccess->lock();
+
+        (*queue)[cnt] = id + " #" + std::to_string(cnt);
+        printf("Prod %s: Putting this msg in queue: \'%s\'\n",(*queue)[cnt].c_str());
+
+        QueueAccess->unlock();
+        FilledSlotsInQueue->up();
+        cnt++;
+        if (cnt > (*queue).size())
+        {
+            break;
+        }
+    }
 }
 
-/// @brief this is the Producer's attribute getter (public_val)
-/// @author aarif
-/// @return returns Producer's attribute's (public_val) value
-int Producer::get_public_val()
-{
-    return public_val;
-}
 

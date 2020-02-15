@@ -8,6 +8,8 @@
 #include<string>
 #include<vector>
 #include <cstring>
+#include <mutex>
+#include "semaphore.hpp"
 
 /// @brief this is the Producer class that can add data to a shared queue
 /// this class gets direction to the semaphore it's supposed to check to see if
@@ -16,11 +18,15 @@
 class Producer
 {
     private:
-        int public_val;
+        std::string id;
+        uint32_t queue_size;
+        Semaphore * EmptySlotsInQueue;
+        Semaphore * FilledSlotsInQueue;
+        std::mutex * QueueAccess;
+        std::vector<std::string>* queue;
 
     public:
-        Producer();
+        Producer(std::string, std::mutex*, Semaphore*, Semaphore*, std::vector<std::string>*);
         ~Producer();
-        void set_public_val(int num);
-        int get_public_val();
+        void run();
 };

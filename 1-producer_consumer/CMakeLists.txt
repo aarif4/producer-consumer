@@ -25,14 +25,21 @@ set(CMAKE_CXX_FLAGS "-Wall -Wextra -O3 -g -fPIC")
 #   you've made
 ################################################################################
 include_directories("inc")
+add_library(semaphore STATIC
+src/semaphore.cpp
+inc/semaphore.hpp
+)
 add_library(producer STATIC
 src/producer.cpp
 inc/producer.hpp
 )
+target_link_libraries(producer semaphore)
 add_library(consumer STATIC
 src/consumer.cpp
 inc/consumer.hpp
 )
+target_link_libraries(consumer semaphore)
+
 
 
 
@@ -40,7 +47,7 @@ inc/consumer.hpp
 # Build Project
 ################################################################################
 add_executable(main src/main.cpp)
-target_link_libraries(main producer consumer)
+target_link_libraries(main producer consumer semaphore)
 install(TARGETS main DESTINATION bin)
 
 
@@ -51,5 +58,5 @@ install(TARGETS main DESTINATION bin)
 # This is where you keep all unit testing code
 ################################################################################
 message (STATUS "Making unit testing modules for this application")
-add_subdirectory(tests)
+#add_subdirectory(tests)
 add_subdirectory(doc)

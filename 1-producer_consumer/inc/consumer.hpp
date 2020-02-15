@@ -8,19 +8,25 @@
 #include<string>
 #include<vector>
 #include <cstring>
+#include <mutex>
+#include "semaphore.hpp"
 
-/// @brief this is the Consumer class that can get data from a shared queue
+/// @brief this is the Producer class that can add data to a shared queue
 /// this class gets direction to the semaphore it's supposed to check to see if
-/// the queue is available to be read from. Once it is available, the object
-/// reads a message from the queue (assuming that the queue isn't empty)
+/// the queue is available to be written to. Once it is available, the object
+/// writes a message to the queue (assuming that the queue isn't full)
 class Consumer
 {
     private:
-        int public_val;
+        std::string id;
+        uint32_t queue_size;
+        Semaphore * EmptySlotsInQueue;
+        Semaphore * FilledSlotsInQueue;
+        std::mutex * QueueAccess;
+        std::vector<std::string>* queue;
 
     public:
-        Consumer();
+        Consumer(std::string, std::mutex*, Semaphore*, Semaphore*, std::vector<std::string>*);
         ~Consumer();
-        void set_public_val(int num);
-        int get_public_val();
+        void run();
 };
