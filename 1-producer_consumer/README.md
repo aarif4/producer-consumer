@@ -124,4 +124,5 @@ Open this file in a web browser of your choice.
 
 ## Final Thoughts
 
-
+Overall, encapsulating the semaphores required to store and expunge packets of data was the right thing to do because 
+it limited the need for Producer and Consumer classes to handle semaphores and mutexes.
