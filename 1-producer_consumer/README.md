@@ -31,32 +31,78 @@ sudo cp *.a /usr/lib
 ### Doxygen (Documentation)
 Getting **Doxygen** is pretty easy, all you need to is run this command in your terminal and that's it:
 ```
-sudo apt-get install doxygen
+sudo apt-get install doxygen graphviz
 ```
 
 ## Build Process
-Build this project like any other CMake project; perform the following steps in your terminal (assuming you're inside the project):
+Build this project like any other CMake project; make a build folder and run CMake's build commands to build the project. To build this project, perform the following steps in your terminal (assuming you're inside the project):
 ```
 mkdir build
 cd build
 cmake ..
 make
-make doc
+make doc # to generate API
 ```
 That last command `make doc` prompts Doxygen to traverse through this project and stitch together an API based on comments in the source code.
 
 ## How To Run
-All relevant executables can be found in `build/bin/` folder. The API is located in 
+All relevant executables can be found in `build/bin/` folder. The API Documentation generation is located in `build/doc/` folder.
+
 ### Running Executable
-The main executable demonstrates a solution to this concurrency problem by running two Consumers and one Producer in their own individual threads. As the Producer keeps adding data to the queue, each Consumer handles the even messages and odd messages (this is known due to the numbering of the packets that the Producer adds to the data before pushing it into the queue). To run this executable, do:
+The main executable demonstrates a solution to this concurrency problem by running one Consumer and one Producer in their own individual threads. As the Producer keeps adding data to the queue, the Consumer handles the messages. To run this executable, do:
 
 ```
 ./build/bin/main
 ```
 
 You should see the following output:
-
-==TODO==
+```
+main: starting application
+Creating Queue obj
+Queue Max Size = 10
+In Producer P0's constructor
+WEARE STARTING PROD THREAD
+in producer P0's run() fcn
+in producer P0's while
+P0: Putting this msg in queue: 'P0 Msg#0'
+P0: Done.
+In Consumer C0's constructor
+WEARE STARTING CONS THREAD
+in consumer C0's run() fcn
+in consumer C0's while
+C0: Going to get message from queue.
+C0: Got this msg from the queue: 'P0 Msg#0'
+in producer P0's while
+P0: Putting this msg in queue: 'P0 Msg#1'
+P0: Done.
+in consumer C0's while
+C0: Going to get message from queue.
+C0: Got this msg from the queue: 'P0 Msg#1'
+in producer P0's while
+P0: Putting this msg in queue: 'P0 Msg#2'
+P0: Done.
+in consumer C0's while
+C0: Going to get message from queue.
+C0: Got this msg from the queue: 'P0 Msg#2'
+in producer P0's while
+P0: Putting this msg in queue: 'P0 Msg#3'
+P0: Done.
+in consumer C0's while
+C0: Going to get message from queue.
+C0: Got this msg from the queue: 'P0 Msg#3'
+in producer P0's while
+P0: Putting this msg in queue: 'P0 Msg#4'
+P0: Done.
+in consumer C0's while
+C0: Going to get message from queue.
+C0: Got this msg from the queue: 'P0 Msg#4'
+in producer P0's while
+P0: Putting this msg in queue: 'P0 Msg#5'
+P0: Done.
+in consumer C0's while
+C0: Going to get message from queue.
+C0: Got this msg from the queue: 'P0 Msg#5'
+```
 
 ### Running Test Cases
 The test cases that are run are the following
@@ -78,4 +124,5 @@ Open this file in a web browser of your choice.
 
 ## Final Thoughts
 
-
+Overall, encapsulating the semaphores required to store and expunge packets of data was the right thing to do because 
+it limited the need for Producer and Consumer classes to handle semaphores and mutexes.
