@@ -98,7 +98,7 @@ fprintf(stderr,"WEARE STARTING PROD THREAD\n");
         break;
         case CONSUMER:
         {
-            Consumer cobj(id, queue, 10*sleep_dur_sec);
+            Consumer cobj(id, queue, sleep_dur_sec);
 fprintf(stderr,"WEARE STARTING CONS THREAD\n");
             cobj.run();
         }
