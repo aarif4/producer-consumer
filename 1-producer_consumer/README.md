@@ -118,19 +118,42 @@ build/doc/producer_consumer_problem/html/index.html
 Open this file in a web browser of your choice.
 
 ### Running Test Cases
-The test cases that are run are the following
+there are two test cases:
+1. **Producer_Consumer.1ThreadIter1_1ThreadIter1**: This test does the following:
+  * instantiates a 2-element Queue object
+  * shares Queue object with 1 Producer object and 1 Consumer object. 
+  * The Producer writes a message to the queue and the Consumer reads the message in the queue
+  * We compare the message received to the message sent
+  * **GOAL**: To show that as we push data to the Queue, the data is received at the Consumer uncorrupted
+2. **Producer_Consumer.1ThreadIter1Iter9_2ThreadIter1Iter9**: This test does the following:
+  * instantiates a 10-element Queue object
+  * shares Queue object with 1 Producer object and 2 Consumer objects. 
+  * The Producer first writes 1 message to the queue and then writes 9 more messages to the queue
+    * We save the first message pushed to the Queue (`pmsg1`) and the last message pushed to the Queue (`pmsg2`)
+  * Consumer #1 receives 1 message from the queue (`cmsg1`)
+  * Consumer #2 reads the rest of the messages in the queue and saves the last one (`cmsg2`)
+  * We compare `pmsg1` to `cmsg1` and then compare `pmsg2` to `cmsg2`
+  * **GOAL**: To show that as we push data to the Queue, the order of the data is perserved regardless of the number of Consumers pulling data from the Queue object.
 
-==TODO== make a table with the name and what that test case does
-
+To run these tests, run the following command in the terminal while being in this project's directory:
 ```
 ./build/bin/executeTests
 ```
 You should see the following output:
-==TODO==
+```
+[==========] Running 2 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 2 tests from Producer_Consumer
+[ RUN      ] Producer_Consumer.1ThreadIter1_1ThreadIter1
+[       OK ] Producer_Consumer.1ThreadIter1_1ThreadIter1 (0 ms)
+[ RUN      ] Producer_Consumer.1ThreadIter1Iter9_2ThreadIter1Iter9
+[       OK ] Producer_Consumer.1ThreadIter1Iter9_2ThreadIter1Iter9 (0 ms)
+[----------] 2 tests from Producer_Consumer (1 ms total)
 
-
+[----------] Global test environment tear-down
+[==========] 2 tests from 1 test suite ran. (1 ms total)
+[  PASSED  ] 2 tests.
+```
 
 ## Final Thoughts
-
-Overall, encapsulating the semaphores required to store and expunge packets of data was the right thing to do because 
-it limited the need for Producer and Consumer classes to handle semaphores and mutexes.
+In this project, we've developed a solution to the producer-consumer problem that is independent of the number of Consumers or Producers instantiated. We've created a Queue class that hid (i.e. encapsulated) the complexity of operating semaphores and mutexes, leading to the shared resource interacting with Producers and Consumers via simple method calls (i.e. `pullMsg()` and `pushMsg()`). The Producer and Consumer classes behaved well when running in their own individual threads. The only downside is that this solution works if we want to achieve this behavior across threads within the same process. Had we wanted to demonstrate a solution that works across several independent processes, then we'd need to ground the shared Queue object to use hardcoded semaphores, which is undesirable, but that's the only solution I can imagine to solve this problem. Regardless, this solution works for the scope I've maintained in this project; achieve oraganized usage of a shared resource over multiple threads. The test cases prove that this Queue object is saving data in the right order and is agnostic to whichever thread is accessing it. The Doxygen API illustrates the dependencies and how we interfaced each class to achieve this goal. 
