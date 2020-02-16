@@ -107,6 +107,7 @@ pushpull: Going to run 1 producer(s) and 1 consumer(s) with a 10-element shared 
 > ./build/bin/pushpull --help
 > ```
 > This program can handle CLI arguments so that users can modify certain parameters so that they can exercise this program in different ways. I've limited the range of acceptable values because bounded values were easier to validate.
+>
 > **NOTE:** When using options, DO **NOT** FORGET THE EQUAL SIGN!
 
 ### View API Documentation
