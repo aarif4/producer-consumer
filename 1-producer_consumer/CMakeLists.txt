@@ -11,7 +11,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 ################################################################################
 enable_testing()
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -O3 -g -fPIC")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -O3 -g -fPIC -Wformat")
 
 
 
@@ -51,9 +51,9 @@ target_link_libraries(consumer queue)
 ################################################################################
 # Build Project
 ################################################################################
-add_executable(main src/main.cpp)
-target_link_libraries(main producer consumer queue semaphore pthread)
-install(TARGETS main DESTINATION bin)
+add_executable(pushpull src/main.cpp)
+target_link_libraries(pushpull producer consumer queue semaphore pthread)
+install(TARGETS pushpull DESTINATION bin)
 
 
 

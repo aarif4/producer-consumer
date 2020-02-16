@@ -11,8 +11,6 @@
 #include<string>
 #include "queue.hpp"
 
-#define DEBUG true
-
 /// @brief this is the Producer class that adds messages to a shared FIFO Queue until it's full. In that situation, the Producer hangs until the Queue has an available slot to store a new message
 class Producer
 {
@@ -20,10 +18,13 @@ class Producer
         std::string id;
         Queue* queue;
         double sleep_dur_sec;
+        std::string last_msg;
+        bool verbose;
     public:
-        Producer(std::string id, Queue * queue, double sleep_sec);
+        Producer(std::string id, Queue * queue, double sleep_sec, bool verbose);
         ~Producer();
-        void run();
+        void run(int iterations);
+        std::string get_last_msg();
 };
 
 #endif

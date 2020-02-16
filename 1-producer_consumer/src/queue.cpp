@@ -2,20 +2,18 @@
 
 Queue::Queue(uint32_t queue_max_size)
 {
-    fprintf(stderr, "Creating Queue obj\n");
     this->MAX_SIZE = queue_max_size;
-    fprintf(stderr, "Queue Max Size = %d\n", this->MAX_SIZE);
     this->empty_count = new Semaphore(this->MAX_SIZE);
     this->fill_count  = new Semaphore(0);
 }
 
 Queue::~Queue()
 {
-    fprintf(stderr, "Destroying Queue obj\n");
 }
 
 void Queue::pushMsg(std::string msg)
 {
+    bool DEBUG = false;
     if (DEBUG)
     {
         fprintf(stderr, "Queue(push) => Pushing msg \'%s\' to the queue\n", msg.c_str());
@@ -54,6 +52,7 @@ void Queue::pushMsg(std::string msg)
 
 std::string Queue::pullMsg()
 {
+    bool DEBUG = false;
     if (DEBUG)
     {
         fprintf(stderr, "Queue(pull) => Pulling msg from the queue\n");

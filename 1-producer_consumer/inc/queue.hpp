@@ -16,8 +16,6 @@
 
 #include "semaphore.hpp"
 
-#define DEBUG false
-
 /// @brief this class that defines a resource (FIFO queue) that's 
 /// shared by several Producer&Consumer objects
 /// @author aarif
