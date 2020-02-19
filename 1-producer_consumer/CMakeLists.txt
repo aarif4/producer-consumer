@@ -63,5 +63,5 @@ install(TARGETS pushpull DESTINATION bin)
 # This is where you keep all unit testing code
 ################################################################################
 message (STATUS "Making unit testing modules for this application")
-add_subdirectory(tests)
+#add_subdirectory(tests)
 add_subdirectory(doc)
