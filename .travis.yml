@@ -17,11 +17,11 @@ addons:
     - doxygen
     - graphviz
 
-before_script:
-  - cd /usr/src/gtest
-  - sudo cmake CMakeLists.txt
-  - sudo make
-  - sudo cp *.a /usr/lib
+#before_script:
+#  - cd /usr/src/gtest
+#  - sudo cmake CMakeLists.txt
+#  - sudo make
+#  - sudo cp *.a /usr/lib
 
 script:
   - cd 1-producer_consumer
@@ -30,5 +30,5 @@ script:
   - cmake ..
   - make
 
-after_success:
- - ./build/bin/executeTests
+#after_success:
+# - ./build/bin/executeTests
