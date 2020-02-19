@@ -1,0 +1,34 @@
+# decide on which language your project is using
+language: cpp
+
+# next, define the environment you want to use to test your builds
+# in this case, we're going to assume Ubuntu 18.04
+dist: bionic
+sudo: true
+
+addons:
+  apt:
+    update: true
+    packages:  # todo: also specify which g++ to use (for C++11 support only)
+    - build-essential
+    - g++
+    - cmake
+    - googletest
+    - doxygen
+    - graphviz
+
+before_script:
+  - cd /usr/src/gtest
+  - sudo cmake CMakeLists.txt
+  - sudo make
+  - sudo cp *.a /usr/lib
+
+script:
+  - cd 1-producer_consumer
+  - mkdir build
+  - cd build 
+  - cmake ..
+  - make
+
+after_success:
+ - ./build/bin/executeTests
