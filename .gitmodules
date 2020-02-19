@@ -1,0 +1,3 @@
+[submodule "1-producer_consumer/gtest"]
+	path = 1-producer_consumer/gtest
+	url = https://github.com/google/googletest.git
