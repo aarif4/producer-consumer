@@ -51,7 +51,7 @@ target_link_libraries(consumer queue)
 ################################################################################
 # Build Project
 ################################################################################
-add_executable(pushpull src/maian.cpp)
+add_executable(pushpull src/main.cpp)
 target_link_libraries(pushpull producer consumer queue semaphore pthread)
 install(TARGETS pushpull DESTINATION bin)
 
